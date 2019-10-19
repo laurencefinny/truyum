@@ -1,19 +1,19 @@
 <br>
 <h2 class="mt-4 pt-4" style="text-align: center;">Cart</h2>
-<div  class="alert alert-secondary mt-4 pt-4 col-12 col-md-12 col-lg-6" style="margin-left: 26%; text-align:center;" *ngIf="cart.cartInterface === null  ||  cart.cartInterface.length === 0; else cartItems"> <span class="mt-4 pt-4">No items in cart. Use 'Add to Cart' option in product list.</span>
+<div  class="alert alert-secondary mt-4 pt-4 col-12 col-md-12 col-lg-6" style="margin-left: 26%; text-align:center;" *ngIf="!cartExists else cartItems"> <span class="mt-4 pt-4">No items in cart. Use 'Add to Cart' option in product list.</span>
 </div >
 <ng-template #cartItems>
 <div class="container mt-4 mb-4 pt-4">
   <div class="list-group mx-auto col-md-6" >
- 
-    <div  *ngFor="let item of cart.cartInterface"
+    
+    <div  *ngFor="let item of cart.menuItemList"
       class="list-group-item list-group-item-action">
       <div class="d-flex justify-content-between">
-        <label class="list-group-item-heading text-muted"><h3>{{item.cartItem.name}}</h3></label>
-        <label class="text-danger">{{item.cartItem.price | currency:'INR'}}</label>
+        <label class="list-group-item-heading text-muted"><h3>{{item.name}}</h3></label>
+        <label class="text-danger">{{item.price | currency:'INR'}}</label>
       </div>
       <p class="new-user">
-        <a><i class="material-icons text-muted text-down delete-icon-size" (click)="onRemoveItem(item.itemId)">delete_forever</i></a>
+       <i class="material-icons text-muted text-down delete-icon-size" (click)="onRemoveItem(item.id)">delete_forever</i>
       </p>
     </div> 
      <div 
@@ -28,7 +28,7 @@
 </ng-template>
 <div class="row justify-content-center">
   <div class="col-12 col-md-12 col-lg-6 mt-4 ">
-      <button  class="btn btn-primary"
-      routerLink="/menuList">Continue with Shopping </button>
+      <a  class="btn btn-primary"
+      routerLink="/menuList">Continue with Shopping </a>
   </div>
   </div>

@@ -1,33 +1,30 @@
-The content below is only a placeholder and can be replaced.
-
 <nav class="navbar navbar-expand-md fixed-top mb-4">
-        <a class="navbar-brand" href="#"><i
-          class="material-icons cart-icon">restaurant_menu</i>truYum</a>
-        <button class="navbar-toggler navbar-dark" type="button"
-          data-toggle="collapse" data-target="#collapsibleNavbar">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" routerLink="menuList">Menu Items</a></li>
-            <li class="nav-item" *ngIf="!isAuthenticated()">
-              <a class="nav-link" routerLink="signup">Sign Up</a>
-          </li>
-            <li class="nav-item" *ngIf="isAuthenticated()">
-              <a class="nav-link" routerLink="cart">Cart</a>
-            </li>
-            <li class="nav-item" *ngIf="!isAuthenticated()">
-              <a class="nav-link" routerLink="login">Log In</a>
-          </li>
-            <li class="nav-item" *ngIf="isAuthenticated()"><a class="nav-link">
-                <span><i class="material-icons cart-icon"
-                  style="color: #ffffff; font-size: 18px">person</i></span>{{getUser().lastName}}, {{getUser().firstName}}
-            </a></li>
-            <li class="nav-item" *ngIf="isAuthenticated()">
-              <a class="nav-link" href="#" (click)="onSignOut()">Logout</a></li>
-          </ul>
-        </div>
-      </nav>
- 
-     
+  <a class="navbar-brand" href="#"><i
+    class="material-icons cart-icon">restaurant_menu</i>truYum</a>
+  <button class="navbar-toggler navbar-dark" type="button"
+    data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item"><a class="nav-link" routerLink="menuList">Menu Items</a></li>
+      <li class="nav-item" *ngIf="!isAuthenticated()">
+        <a class="nav-link" routerLink="signup">Sign Up</a>
+    </li>
+      <li class="nav-item" *ngIf="isAuthenticated()">
+        <a class="nav-link" routerLink="cart">Cart</a>
+      </li>
+      <li class="nav-item" *ngIf="!isAuthenticated()">
+        <a class="nav-link" routerLink="login">Log In</a>
+    </li>
+      <li class="nav-item" *ngIf="isAuthenticated()"><a class="nav-link" href="#">
+          <span><i class="material-icons cart-icon"
+            style="color: #ffffff; font-size: 18px">person</i></span>{{getUser()}}
+      </a></li>
+      <li class="nav-item" *ngIf="isAuthenticated()">
+        <a class="nav-link" href="#" (click)="onSignOut()">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
 <router-outlet></router-outlet>

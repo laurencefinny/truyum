@@ -36,9 +36,7 @@ export class FoodServiceService  {
     });
   }
   updateFoodItem(editfood:FoodItem){
-    // const foodIndex=this.foodItem.findIndex(food =>food.id===editfood.id);
-    // const updatedFoodItem=this.foodItem.splice(foodIndex,1,editfood);  
-    // return updatedFoodItem; 
+    
    let updatedItem=this.foodItem.find(this.findIndexToUpdate,editfood.id);
    let index=this.foodItem.indexOf(updatedItem);
    this.foodItem[index]=editfood;

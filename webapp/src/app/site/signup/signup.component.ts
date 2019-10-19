@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { UserServiceService } from '../user-service.service';
 
 @Component({
   selector: 'app-signup',
@@ -9,8 +10,9 @@ import { Observable } from 'rxjs';
 export class SignupComponent implements OnInit {
 
   signupForm: FormGroup;
+  userExists:boolean=false;
   formSubmitted = false;
-
+  constructor(private userService:UserServiceService){}
   ngOnInit() {
     this.signupForm = new FormGroup({
       'username': new FormControl(null, [Validators.required, Validators.maxLength(20)], this.isUsernameTaken),
@@ -22,7 +24,7 @@ export class SignupComponent implements OnInit {
   }
 
   isUsernameTaken(formControl: FormControl): Promise<any> | Observable<any> {
-    const promise = new Promise((resolve, reject) => { // should be remote http call to REST service
+    const promise = new Promise((resolve, reject) => { 
       setTimeout(() => {
         if (formControl.value === 'john') {
           resolve({ 'userNameTaken': true });
@@ -45,6 +47,11 @@ export class SignupComponent implements OnInit {
 
   onSubmitSignUp() {
     this.formSubmitted = true;
+    this.userService.signUp(this.signupForm.value).subscribe((data)=>{
+      this.userExists=data;
+    });
+    console.log(this.signupForm.value);
     this.signupForm.reset();
+    
   }
 }

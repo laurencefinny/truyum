@@ -3,6 +3,8 @@ import { FoodItem } from './food-item';
 import {FoodServiceService} from '../food-service.service';
 import { CartService } from 'src/app/shopping/cart.service';
 import { AuthService } from '../../site/auth.service';
+import { MenuItemServicesService } from 'src/menu-item.service';
+
 
 @Component({
   selector: 'app-item-info',
@@ -15,8 +17,7 @@ export class ItemInfoComponent implements OnInit {
   @Input() foodIte:FoodItem;
   @Output() cartUpdated: EventEmitter<number> = new EventEmitter<number>();
   cartAdded=false;
-  constructor(private foodService:FoodServiceService,private cartService:CartService,private authService: AuthService){
-
+  constructor(private foodService:FoodServiceService,private cartService:CartService,private authService: AuthService,private menuitemService:MenuItemServicesService){
   }
   addToCart(foodId:number){
     this.cartUpdated.emit(foodId);
@@ -24,11 +25,13 @@ export class ItemInfoComponent implements OnInit {
     setTimeout(() => {
       this.cartAdded = false;
     }, 1000);
-   // this.cartService.addToCart(foodId,1);//hard corderd to 1
+   
   }
   ngOnInit() {
-    this.foodItem=this.foodService.getFoodItems();
-    this.foodService.getSubject().subscribe((data)=>{
+    this.menuitemService.getAllMenuItems().subscribe((data)=>{
+      this.foodItem=data;
+    });
+    this.menuitemService.getSubject().subscribe((data)=>{
       this.foodItem=data;
     });
   
@@ -39,4 +42,3 @@ export class ItemInfoComponent implements OnInit {
   }
 
 } 
-

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { NgForm } from '@angular/forms';
+import { UserServiceService } from '../user-service.service';
 
 @Component({
   selector: 'app-login',
@@ -14,13 +15,14 @@ import { NgForm } from '@angular/forms';
   `]
 })
 export class LoginComponent implements OnInit {
-
+  
   isLoginValid = true;
   authSource: string;
-
+  error:String;
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private userService:UserServiceService) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe((params: Params) => {
@@ -31,12 +33,23 @@ export class LoginComponent implements OnInit {
   onSubmit(form: NgForm) {
     const username = form.value.username;
     const password = form.value.password;
-    if (username === 'john') { // temporary to show the invalid user login
-      this.isLoginValid = false;
-    } else {
+    console.log(password+''+username);
+    this.userService.authenticate(username,password).subscribe((data)=>{
+      this.userService.setToken(data.token);
       this.authService.logIn(username, password);
       this.router.navigate([this.authService.redirectUrl]);
+    },
+    (error)=>{
+      error="Invalid Username or Password";          
+      this.isLoginValid = false;
     }
+    );
+    // if (username === 'john') { // temporary to show the invalid user login
+    //   this.isLoginValid = false;
+    // } else {
+    //   this.authService.logIn(username, password);
+    //   this.router.navigate([this.authService.redirectUrl]);
+    // }
   }
 
 }

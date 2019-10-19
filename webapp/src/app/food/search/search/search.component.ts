@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FoodServiceService } from '../../food-service.service'
 import {FoodItem} from '../../item-info/food-item';
+import { MenuItemServicesService } from 'src/menu-item.service';
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -10,15 +12,17 @@ export class SearchComponent implements OnInit {
   searchkey:string;
   filteredList:FoodItem[];
   originalLists:FoodItem[];
-  constructor(private foodList:FoodServiceService) { }
+  constructor(private menuItemService:MenuItemServicesService) { }
 
   ngOnInit() {
-    this.originalLists=this.foodList.getFoodItems();
+    this.menuItemService.getAllMenuItems().subscribe((data)=>{
+      this.originalLists=data;
+    });
     this.filteredList=this.originalLists;
+   
   }
   search(event:any){
     this.filteredList=this.originalLists.filter(food=>food.name.toLocaleLowerCase().includes(this.searchkey.toLocaleLowerCase()));
-    this.foodList.getSubject().next(this.filteredList);
-      
+    this.menuItemService.getSubject().next(this.filteredList);
   }
 }

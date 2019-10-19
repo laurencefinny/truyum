@@ -1,10 +1,12 @@
 import { Component, OnInit, Output,EventEmitter, Input } from '@angular/core';
 import {FoodItem} from '../item-info/food-item';
 import {FoodServiceService} from '../food-service.service';
-import { Observable } from 'rxjs';
+
 import { CartService } from 'src/app/shopping/cart.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../site/auth.service'
+import { MenuItemServicesService } from 'src/menu-item.service';
+
 
 @Component({
   selector: 'app-menu',
@@ -16,34 +18,39 @@ export class MenuComponent implements OnInit {
   originalList: FoodItem[];
 
   cartAdded=false;
-  constructor(private foodService:FoodServiceService,private cartService:CartService, private authService: AuthService,
-    private router: Router) { 
+  constructor(private cartService:CartService, private authService: AuthService,
+    private router: Router,private menuItemService:MenuItemServicesService) { 
   
   }
   
   ngOnInit() {
-    this.foodItem=this.foodService.getFoodItems();
-    this.foodService.getSubject().subscribe((data)=>{
-     // this.foodItem=data;
-      this.originalList = [...data]; // maintain original copy
-      this.foodItem = [...data]; // update list rendered in template
+    this.menuItemService.getAllMenuItems().subscribe((data)=>{
+      this.foodItem=data;
+    })
+    this.menuItemService.getSubject().subscribe((data)=>{
+     
+      this.originalList = [...data]; 
+      this.foodItem = [...data]; 
     });
 
-    this.foodService.filter.subscribe((obj: { name: string }) => {
-      if (obj.name !== '') { // filter from original list for search text, and update list rendered
+    this.menuItemService.filter.subscribe((obj: { name: string }) => {
+      if (obj.name !== '') { 
         const result = this.originalList.filter(prod => prod.name.toLowerCase().includes(obj.name.toLowerCase()));
         this.foodItem = result ? result : [];
-      } else { // reset to original product list, if not search text entered
+      } else { 
         this.foodItem = [...this.originalList];
       }
     });
   
   }
   addedToCart(foodId:number){
-    this.cartService.addToCart(foodId,1);//hardCode it to 1
     if (!this.authService.loggedIn) {
       this.router.navigate(['/cart']);
-    }
+    }else{
+    this.menuItemService.addToCart(foodId,this.authService.userAuthenticated1).subscribe((data)=>{
+      console.log(data);
+    });
+  }
   }
 
 }

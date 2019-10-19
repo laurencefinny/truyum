@@ -15,8 +15,8 @@ import { AuthService } from './site/auth.service'
 import { LoginComponent } from './site/login/login.component'
 import { SignupComponent } from './site/signup/signup.component'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptorService } from './site/auth-interceptor';
 import { AuthGaurdService } from './site/auth-gaurd.service';
+import { MenuItemServicesService } from 'src/menu-item.service';
 
 @NgModule({
   declarations: [
@@ -54,13 +54,12 @@ import { AuthGaurdService } from './site/auth-gaurd.service';
         component: SignupComponent
       },
       {
-        path: 'cartUpdated/:id', 
-        component:  ItemEditComponent, 
-        canActivate: [AuthGaurdService] 
+        path: 'cartUpdated1/:id', 
+        component:  ItemEditComponent
       },
     ])
   ],
-  providers: [FoodServiceService,CartService,AuthService,{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
+  providers: [MenuItemServicesService,FoodServiceService,CartService,AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

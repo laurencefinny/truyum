@@ -10,3 +10,12 @@ insert into `truyum`.`menu_item` (me_name,me_price,me_active,me_date_of_launch,m
 insert into user values(1,'user','$2a$10$R/lZJuT9skteNmAku9Y7aeutxbOKstD5xE5bHOf74M2PHZipyt3yK');
 insert into user values(2,'admin','$2a$10$R/lZJuT9skteNmAku9Y7aeutxbOKstD5xE5bHOf74M2PHZipyt3yK');
 insert into user values(3,'default','$2a$10$R/lZJuT9skteNmAku9Y7aeutxbOKstD5xE5bHOf74M2PHZipyt3yK');
+
+insert into role values(1,'USER');
+insert into role values(2,'ADMIN');
+insert into role values(3,'DEFAULT');
+
+
+insert into user_role values(1,1,1);
+insert into user_role values(2,2,2);
+insert into user_role values(3,3,3);

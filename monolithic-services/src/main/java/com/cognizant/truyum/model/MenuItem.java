@@ -1,16 +1,44 @@
 package com.cognizant.truyum.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+@Table(name = "menu_item")
 public class MenuItem {
-	private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "me_id")
+	private int id;
+	@Column(name = "me_name")
 	private String name;
-	private float price;
+	@Column(name = "me_price")
+	private BigDecimal price;
+	@Column(name = "me_active")
 	private boolean active;
+	@Column(name = "me_date_of_launch")
 	private Date dateOfLaunch;
+	@Column(name = "me_category")
 	private String category;
+	@Column(name = "me_free_delivery")
 	private boolean freeDelivery;
+	@Column(name = "me_image_link")
 	private String imageLink;
+
+	@JsonIgnore
+	@ManyToMany(mappedBy="menuItemList")
+	private Set<User> userList;
 
 	public String getImageLink() {
 		return imageLink;
@@ -20,12 +48,20 @@ public class MenuItem {
 		this.imageLink = imageLink;
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Set<User> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(Set<User> userList) {
+		this.userList = userList;
 	}
 
 	public String getName() {
@@ -36,11 +72,11 @@ public class MenuItem {
 		this.name = name;
 	}
 
-	public float getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
@@ -82,4 +118,5 @@ public class MenuItem {
 				+ dateOfLaunch + ", category=" + category + ", freeDelivery=" + freeDelivery + ", imageLink="
 				+ imageLink + "]";
 	}
+
 }

@@ -22,9 +22,8 @@ export class SignupComponent implements OnInit {
       'confirmPassword': new FormControl(null, [Validators.required, this.matchConfirmPassword.bind(this)]),
     });
   }
-
   isUsernameTaken(formControl: FormControl): Promise<any> | Observable<any> {
-    const promise = new Promise((resolve, reject) => { 
+    const promise = new Promise((resolve, reject) => { // should be remote http call to REST service
       setTimeout(() => {
         if (formControl.value === 'john') {
           resolve({ 'userNameTaken': true });

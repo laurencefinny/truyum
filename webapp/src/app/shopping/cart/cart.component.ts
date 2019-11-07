@@ -16,25 +16,25 @@ export class CartComponent implements OnInit {
     cartService.getCart().subscribe((data)=>{
       this.cart=data;
       if(this.cart){
-      if(this.cart.total==0 && this.cart.menuItemList== null){
-        this.cartExists=false;
-      }else{
-        this.cartExists=true;
-      }
-      }else{
-        this.cartExists=false;
-      }
+        if(this.cart.total==0 && this.cart.menuItemList== null){
+          this.cartExists=false;
+        }else{
+          this.cartExists=true;
+        }
+        }else{
+          this.cartExists=false;
+        }
     });
    }
    onRemoveItem(itemid:string){
-   
+   //  console.log(itemid+'component');
  
     this.cartService.removeFromCart(itemid).subscribe((data)=>{
       console.log(data+" "+itemid);
     });
     this.cartService.getCart().subscribe((data)=>{
-      this.cart=data;
-      if(this.cart==null){
+   
+      if(data==null){
         this.cartExists=false;
       }
     });

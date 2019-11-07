@@ -18,16 +18,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import com.cognizant.truyum.security.AppUserDetailsService;
 import com.cognizant.truyum.security.JwtAuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TruyumApplication.class);
-
+	
+	@Autowired
+	 AppUserDetailsService appUserDetailsService;
 	@Autowired
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(inMemoryUserDetailsManager());
+		//auth.userDetailsService(inMemoryUserDetailsManager());
+		auth.userDetailsService(appUserDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
@@ -35,21 +39,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		LOGGER.info("Start");
 		return new BCryptPasswordEncoder();
 	}
-
 	@Bean
 	public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-		LOGGER.info("Start");
-		List<UserDetails> userDetailsList = new ArrayList<>();
+	    LOGGER.info("Start");
+	    List<UserDetails> userDetailsList = new ArrayList<>();
 
-		userDetailsList.add(User.withUsername("user").password(passwordEncoder().encode("pwd")).roles("USER").build());
+	    userDetailsList.add(
+	        User.withUsername("user")
+	            .password(passwordEncoder()
+	            .encode("pwd"))
+	            .roles("USER").build());
+		
+	    userDetailsList.add(
+	        User.withUsername("admin")
+	            .password(passwordEncoder()
+	            .encode("pwd"))
+	            .roles("ADMIN").build());
+	    userDetailsList.add(
+		        User.withUsername("default")
+		            .password(passwordEncoder()
+		            .encode("pwd"))
+		            .roles("DEFAULT").build());
 
-		userDetailsList
-				.add(User.withUsername("admin").password(passwordEncoder().encode("pwd")).roles("ADMIN").build());
-		userDetailsList
-				.add(User.withUsername("default").password(passwordEncoder().encode("pwd")).roles("DEFAULT").build());
-
-		LOGGER.info("End");
-		return new InMemoryUserDetailsManager(userDetailsList);
+	    LOGGER.info("End");
+	    return new InMemoryUserDetailsManager(userDetailsList);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -58,14 +71,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		httpSecurity.cors();
 		httpSecurity.csrf().disable().httpBasic().and().authorizeRequests().antMatchers("/users").permitAll()
-				.anyRequest();
-		httpSecurity.csrf().disable().httpBasic().and().authorizeRequests().antMatchers("/menu-items").permitAll()
+		.anyRequest();
+				httpSecurity.csrf().disable().httpBasic().and().authorizeRequests().antMatchers("/menu-items").permitAll()
 				.anyRequest().authenticated();
 		httpSecurity.csrf().disable().httpBasic().and().authorizeRequests().antMatchers("/authenticate")
-				.hasAnyRole("USER", "ADMIN", "DEFAULT").anyRequest().authenticated().and()
+				.hasAnyRole("USER", "ADMIN","DEFAULT").anyRequest().authenticated().and()
 				.addFilter(new JwtAuthorizationFilter(authenticationManager()));
-
+		
 		httpSecurity.csrf().disable().httpBasic().and().addFilter(new JwtAuthorizationFilter(authenticationManager()));
 
 	}
+
+//	private AuthenticationManager authenticationManager() {
+//
+//		return null;
+//	}
 }

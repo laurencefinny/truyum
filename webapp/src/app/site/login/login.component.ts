@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
     console.log(password+''+username);
     this.userService.authenticate(username,password).subscribe((data)=>{
       this.userService.setToken(data.token);
+      console.log(data.token);
       this.authService.logIn(username, password);
       this.router.navigate([this.authService.redirectUrl]);
     },
@@ -44,12 +45,7 @@ export class LoginComponent implements OnInit {
       this.isLoginValid = false;
     }
     );
-    // if (username === 'john') { // temporary to show the invalid user login
-    //   this.isLoginValid = false;
-    // } else {
-    //   this.authService.logIn(username, password);
-    //   this.router.navigate([this.authService.redirectUrl]);
-    // }
+
   }
 
 }

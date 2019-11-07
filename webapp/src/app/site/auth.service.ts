@@ -11,7 +11,7 @@ export class AuthService {
 
   loggedIn = false;
   isAdmin = false;
-  accessToken: string; 
+  accessToken: string; // JWT token
   authSource:String
   redirectUrl = '/menuList';
   userAuthenticated: User;
@@ -23,10 +23,10 @@ export class AuthService {
     this.userService.authenticate(username, password).subscribe((data) => {
       if (data) {
         this.loggedIn = true;
-        console.log("helloAuth");
+        console.log("helloAuth"+data.role);
         this.userAuthenticated = data;
         this.userAuthenticated1=username;
-        this.isAdmin = data.role === 'ROLE_ADMIN';
+        this.isAdmin = data.role === 'ADMIN';
         console.log(this.isAdmin);
 
       }
@@ -34,7 +34,7 @@ export class AuthService {
   }
 
   logOut() {
-    this.redirectUrl = '/menuList'; 
+    this.redirectUrl = '/menuList';
     this.loggedIn = false;
     this.userService.logout();
   }

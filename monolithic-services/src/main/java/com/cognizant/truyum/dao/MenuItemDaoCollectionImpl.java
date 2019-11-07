@@ -18,31 +18,36 @@ import org.springframework.stereotype.Repository;
 
 import com.cognizant.truyum.TruyumApplication;
 import com.cognizant.truyum.model.MenuItem;
+import com.cognizant.truyum.repository.MenuItemRepository;
 import com.cognizant.truyum.util.DateUtil;
 
-@Repository
+//@Repository
 
 public class MenuItemDaoCollectionImpl implements MenuItemDao {
-	// @Autowired
-	// @Qualifier("menuItemList")
+//	@Autowired
+//	@Qualifier("menuItemList")
 	private static ArrayList<MenuItem> menuItemList;
-	private static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("truyum.xml");
-
-	public MenuItemDaoCollectionImpl() {
-
-		menuItemList = (ArrayList<MenuItem>) applicationContext.getBean("menuItemList", "ArrayList.class");
+	private static ApplicationContext applicationContext =   
+		    new ClassPathXmlApplicationContext("truyum.xml");
+	@Autowired
+		MenuItemRepository menuItemrepository;
+	public MenuItemDaoCollectionImpl() {	
+		
+		
+	menuItemList=(ArrayList<MenuItem>)applicationContext.getBean("menuItemList","ArrayList.class");
 	}
+
 
 	@Override
 	public ArrayList<MenuItem> getMenuItemListAdmin() {
-
+		// TODO Auto-generated method stub
 		System.out.println("admin collection");
 		return menuItemList;
 	}
 
 	@Override
 	public ArrayList<MenuItem> getMenuItemListCustomer() throws ParseException {
-
+		// TODO Auto-generated method stub
 		Date date = Calendar.getInstance().getTime();
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String strdate = dateFormat.format(date);
@@ -58,10 +63,10 @@ public class MenuItemDaoCollectionImpl implements MenuItemDao {
 
 	@Override
 	public void modifyMenuItem(MenuItem menuItem) {
-
+		// TODO Auto-generated method stub
 		int i = 0;
 		for (MenuItem menu : menuItemList) {
-			if (menu.getId() == menuItem.getId()) {
+			if (menu.getId()==menuItem.getId()) {
 				break;
 			}
 			i++;
@@ -74,7 +79,7 @@ public class MenuItemDaoCollectionImpl implements MenuItemDao {
 
 	@Override
 	public MenuItem getMenuItem(long menuItemId) {
-
+		// TODO Auto-generated method stub
 		int flag = 0;
 		for (MenuItem menuItem : menuItemList) {
 			if (menuItem.getId() == menuItemId) {
@@ -84,5 +89,6 @@ public class MenuItemDaoCollectionImpl implements MenuItemDao {
 		return null;
 
 	}
+
 
 }

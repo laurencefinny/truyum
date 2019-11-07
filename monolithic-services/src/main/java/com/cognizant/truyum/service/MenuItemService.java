@@ -1,37 +1,43 @@
 package com.cognizant.truyum.service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import com.cognizant.truyum.dao.MenuItemDao;
-
 import com.cognizant.truyum.model.MenuItem;
+import com.cognizant.truyum.repository.MenuItemRepository;
 
 @Service
 public class MenuItemService {
-	@Autowired
-	MenuItemDao menuItemDao;
-
-	public ArrayList<MenuItem> getMenuItemListCustomer() throws ParseException {
-
-		return menuItemDao.getMenuItemListCustomer();
-	}
-
-	public ArrayList<MenuItem> getMenuItemListAdmin() {
-		System.out.println("Admin Service");
-		return menuItemDao.getMenuItemListAdmin();
-	}
-
-	public MenuItem getMenuItem(long id) {
-		System.out.println("Edit Service" + id);
-		return menuItemDao.getMenuItem(id);
-	}
-
-	public void modifyMenuItem(MenuItem menuItem) {
-		menuItemDao.modifyMenuItem(menuItem);
-	}
+		
+//		MenuItemDao menuItemDao;
+		@Autowired
+		MenuItemRepository menuItemRepository;
+		@Transactional
+		public List<MenuItem> getMenuItemListCustomer() throws ParseException{
+			return menuItemRepository.getAllCustomerList();
+			//return menuItemDao.getMenuItemListCustomer();
+		}
+		public List<MenuItem> getMenuItemListAdmin(){
+			System.out.println("Admin Service");
+			//return menuItemDao.getMenuItemListAdmin();
+			return menuItemRepository.findAll();
+		}
+		public MenuItem getMenuItem(long id){
+			System.out.println("Edit Service"+id);
+			int id1=(int)id;
+			
+			//return menuItemDao.getMenuItem(id);
+			return menuItemRepository.getListByid(id1);
+		}
+		public void modifyMenuItem(MenuItem menuItem){
+			//menuItemDao.modifyMenuItem(menuItem);
+			menuItemRepository.save(menuItem);
+		}
 }

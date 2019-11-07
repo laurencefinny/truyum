@@ -5,8 +5,8 @@ import {FoodServiceService} from '../food-service.service';
 import { CartService } from 'src/app/shopping/cart.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../site/auth.service'
+import { UserServiceService } from 'src/app/site/user-service.service';
 import { MenuItemServicesService } from 'src/menu-item.service';
-
 
 @Component({
   selector: 'app-menu',
@@ -19,7 +19,7 @@ export class MenuComponent implements OnInit {
 
   cartAdded=false;
   constructor(private cartService:CartService, private authService: AuthService,
-    private router: Router,private menuItemService:MenuItemServicesService) { 
+    private router: Router,private menuItemService:MenuItemServicesService,private userService:UserServiceService) { 
   
   }
   
@@ -28,16 +28,16 @@ export class MenuComponent implements OnInit {
       this.foodItem=data;
     })
     this.menuItemService.getSubject().subscribe((data)=>{
-     
-      this.originalList = [...data]; 
-      this.foodItem = [...data]; 
+     // this.foodItem=data;
+      this.originalList = [...data]; // maintain original copy
+      this.foodItem = [...data]; // update list rendered in template
     });
 
     this.menuItemService.filter.subscribe((obj: { name: string }) => {
-      if (obj.name !== '') { 
+      if (obj.name !== '') { // filter from original list for search text, and update list rendered
         const result = this.originalList.filter(prod => prod.name.toLowerCase().includes(obj.name.toLowerCase()));
         this.foodItem = result ? result : [];
-      } else { 
+      } else { // reset to original product list, if not search text entered
         this.foodItem = [...this.originalList];
       }
     });
@@ -47,7 +47,7 @@ export class MenuComponent implements OnInit {
     if (!this.authService.loggedIn) {
       this.router.navigate(['/cart']);
     }else{
-    this.menuItemService.addToCart(foodId,this.authService.userAuthenticated1).subscribe((data)=>{
+    this.menuItemService.addToCart(foodId,this.userService.user).subscribe((data)=>{
       console.log(data);
     });
   }

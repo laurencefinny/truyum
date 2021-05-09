@@ -26,10 +26,10 @@ export class UserServiceService {
     headers = headers.set('Authorization', 'Basic ' +btoa(username + ':' + password));
     this.loggedIn=true;
     this.user=username;
-    return this.httpClient.get(environment.baseUrl+'authenticate', {headers})
+    return this.httpClient.get(environment.baseUrl+'authentication-service/authenticate/', {headers})
   }
   signUp(user:User):Observable<any>{
-    return this.httpClient.post<User>(environment.baseUrl+'users',user);
+    return this.httpClient.post<User>(environment.baseUrl+'authentication-service/users',user);
   }
   logout(){
     this.token=null;

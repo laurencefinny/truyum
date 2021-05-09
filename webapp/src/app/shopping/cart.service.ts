@@ -25,13 +25,13 @@ export class CartService {
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + this.userService.getToken()); 
 
-    return this.httpClient.get<CartInterface>(environment.baseUrl+'carts/'+this.authService.userAuthenticated1,{headers});
+    return this.httpClient.get<CartInterface>(environment.baseUrl+'menuitem-service/carts/'+this.authService.userAuthenticated1,{headers});
   }
  
   removeFromCart(itemtId: String) {
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + this.userService.getToken()); 
-    return this.httpClient.delete(environment.baseUrl+'carts/'+this.authService.userAuthenticated1+'/'+itemtId,{headers})
+    return this.httpClient.delete(environment.baseUrl+'menuitem-service/carts/'+this.authService.userAuthenticated1+'/'+itemtId,{headers})
   }
 
   clearCart() {
